@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TxType {
+  in
+  out
+}
+
+enum Category {
+  rent
+  food
+  entertainment
+  transportation
+  utilities
+  other
+}
+
+model Transaction {
+  id          Int      @id @default(autoincrement())
+  tx_type     TxType   // Change to Enum for enforcing values
+  timestamp   DateTime @default(now())
+  amount      Float
+  receipt     String?  // Use String to store the URL of the receipt in S3
+  description String
+  category    Category  // Change to Enum for enforcing categories
+}
